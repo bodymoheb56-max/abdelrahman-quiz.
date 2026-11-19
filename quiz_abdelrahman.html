@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101a35">
+<title>مين يعرف عبدالرحمن أكتر؟</title>
+<style>
+:root{--bg:#0b1226;--panel:#121e3d;--panel2:#19294f;--blue:#4da3ff;--gold:#f4c76b;--text:#f5f7ff;--muted:#aab7d4;--line:#2a3c65}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#1b3768 0%,#0b1226 55%);font-family:Tahoma,Arial,sans-serif;color:var(--text);display:grid;place-items:center;padding:22px}
+.wrap{width:min(100%,680px)}.top{text-align:center;margin-bottom:18px}.logo{width:62px;height:62px;border-radius:20px;margin:0 auto 12px;display:grid;place-items:center;background:linear-gradient(135deg,#287ed8,#173d7a);font-size:29px;box-shadow:0 12px 35px #0006}
+h1{font-size:clamp(25px,5vw,36px);margin:0 0 8px}.sub{color:var(--muted);line-height:1.8;margin:0}
+.card{background:linear-gradient(155deg,#17264a,#101a35);border:1px solid var(--line);border-radius:26px;padding:clamp(20px,5vw,34px);box-shadow:0 24px 70px #0006}
+.tag{display:inline-flex;align-items:center;gap:7px;color:#cfe5ff;background:#1b3b68;border:1px solid #315b8d;border-radius:99px;padding:7px 12px;font-size:13px;margin-bottom:17px}
+h2{font-size:22px;line-height:1.6;margin:5px 0 18px}.field{width:100%;padding:15px 16px;border:1px solid var(--line);border-radius:14px;background:#0c1730;color:white;font-size:16px;outline:none;margin:7px 0 17px}.field:focus{border-color:var(--blue)}
+.btn{border:0;border-radius:14px;padding:15px 20px;font-size:16px;font-weight:bold;cursor:pointer;background:linear-gradient(100deg,#328ee8,#2464c4);color:white;width:100%;transition:.2s}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.secondary{background:#24385f;border:1px solid #3a527e;margin-top:10px}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:14px;margin-bottom:12px}.track{height:8px;border-radius:9px;background:#263657;overflow:hidden;margin-bottom:25px}.fill{height:100%;width:0;background:linear-gradient(90deg,#4da3ff,#f4c76b);transition:width .3s}
+.options{display:grid;gap:11px}.option{width:100%;text-align:right;padding:15px 16px;border-radius:14px;border:1px solid #34486f;background:#17284c;color:var(--text);font-size:16px;cursor:pointer;display:flex;gap:12px;align-items:center}.option:hover{border-color:#69b5ff;background:#1c345f}.option.selected{border-color:#69b5ff;background:#1c416e;box-shadow:0 0 0 2px #4da3ff30}.letter{width:29px;height:29px;flex:0 0 29px;border-radius:9px;background:#263d68;display:grid;place-items:center;color:#cfe5ff;font-weight:bold}
+.feedback{padding:13px 15px;border-radius:13px;margin-top:16px;line-height:1.7}.good{background:#123b32;color:#9df0cd;border:1px solid #236b55}.bad{background:#48252e;color:#ffc0c7;border:1px solid #80414c}
+.result{text-align:center}.score{font-size:56px;font-weight:bold;color:var(--gold);margin:14px 0}.small{color:var(--muted);font-size:13px;line-height:1.8;text-align:center;margin-top:18px}
+.hidden{display:none!important}.name{color:var(--gold)}.divider{height:1px;background:var(--line);margin:22px 0}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="top"><div class="logo">💙</div><h1>مين يعرف عبدالرحمن أكتر؟</h1><p class="sub">10 أسئلة تكشف مين أكتر واحد مركز معاك 👀<br>اختار إجابة واحدة في كل سؤال وشوف نتيجتك في الآخر.</p></header>
+<section class="card" id="start">
+<div class="tag">✨ تحدّي الأصحاب</div>
+<h2>جاهز تثبت إنك تعرف عبدالرحمن كويس؟</h2>
+<label for="player">اكتب اسمك عشان يظهر في النتيجة</label>
+<input id="player" class="field" maxlength="24" placeholder="اسمك..." autocomplete="name">
+<button class="btn" id="begin">ابدأ الاختبار ←</button>
+<p class="small">الاختبار من 10 درجات — بالتوفيق! 💙</p>
+</section>
+<section class="card hidden" id="quiz">
+<div class="meta"><span id="counter">السؤال 1 من 10</span><span id="points">0 / 10</span></div>
+<div class="track"><div class="fill" id="fill"></div></div>
+<div class="tag">السؤال <span id="num">1</span></div>
+<h2 id="question"></h2>
+<div class="options" id="options"></div>
+<div id="feedback" class="feedback hidden" aria-live="polite"></div>
+<button class="btn" id="next" disabled style="margin-top:20px">تأكيد الإجابة</button>
+</section>
+<section class="card hidden result" id="result">
+<div class="tag">🏆 النتيجة النهائية</div>
+<h2 id="greeting"></h2>
+<div class="score" id="score">0/10</div>
+<h2 id="message"></h2>
+<p class="sub" id="detail"></p>
+<div class="divider"></div>
+<button class="btn" id="again">العب من جديد</button>
+<button class="btn secondary" id="share">مشاركة النتيجة</button>
+</section>
+<footer class="small">صُنع بحب للأصحاب 💙</footer>
+</main>
+<script>
+const data=[
+["إيه لون عبدالرحمن المفضل؟",["أحمر","أزرق","أسود","أبيض"],1],
+["إمتى عيد ميلاد عبدالرحمن؟",["11/6","6/11","1/6","11/7"],0],
+["إيه أكلته المفضلة؟",["بيتزا","كشري","شاورما","برجر"],2],
+["إيه أكتر أكلة بيكرهها؟",["ملوخية","سبانخ","بامية","فاصوليا"],1],
+["إيه أكتر حاجة بيحب يعملها؟",["يلعب ألعاب","يسافر","يسأل عن صحابه","يتفرج على أفلام"],2],
+["إيه أكتر حاجة بيكرهها في الناس؟",["العصبية","الغرور","الكذب","الخيانة"],3],
+["مين المطرب المفضل عنده؟",["عمرو دياب","تامر عاشور","محمد حماقي","رامي صبري"],1],
+["إيه فريقه الكروي المفضل؟",["الزمالك","بيراميدز","الأهلي","ليفربول"],2],
+["إيه أكتر حاجة بتفرحه؟",["الفلوس","اهتمام صحابه بيه","السفر","الهدايا"],1],
+["إيه أكبر حلم نفسه يحققه؟",["يسافر العالم","يفتح مطعم","يشتري عربية أحلامه","يبقى لاعب كورة"],2]
+];
+let idx=0,score=0,choice=null,player="صاحبنا",locked=false;
+const $=id=>document.getElementById(id);
+function show(id){["start","quiz","result"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+$("begin").onclick=()=>{player=$("player").value.trim()||"صاحبنا";idx=0;score=0;show("quiz");render()};
+function render(){
+ locked=false;choice=null;
+ $("counter").textContent=`السؤال ${idx+1} من 10`;
+ $("points").textContent=`${score} / 10`;
+ $("num").textContent=idx+1;
+ $("fill").style.width=`${idx*10}%`;
+ $("question").textContent=data[idx][0];
+ $("options").innerHTML="";
+ data[idx][1].forEach((v,i)=>{let b=document.createElement("button");b.className="option";b.innerHTML=`<span class="letter">${["أ","ب","ج","د"][i]}</span><span></span>`;b.querySelector("span:last-child").textContent=v;b.onclick=()=>{if(locked)return;choice=i;document.querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");$("next").disabled=false;$("next").textContent="تأكيد الإجابة"};$("options").appendChild(b)});
+ $("feedback").className="feedback hidden";$("next").disabled=true;
+}
+$("next").onclick=()=>{
+ if(choice===null||locked)return;
+ locked=true;const correct=choice===data[idx][2];if(correct)score++;
+ $("points").textContent=`${score} / 10`;
+ $("feedback").className=`feedback ${correct?"good":"bad"}`;
+ $("feedback").textContent=correct?"إجابة صحيحة! عاش 👏":`مش دي الإجابة الصح 😄 الإجابة الصحيحة: ${data[idx][1][data[idx][2]]}`;
+ document.querySelectorAll(".option").forEach((b,i)=>{b.disabled=true;if(i===data[idx][2])b.style.borderColor="#53d6a2";if(i===choice&&!correct)b.style.borderColor="#ff7887"});
+ $("next").textContent=idx===9?"اعرض نتيجتي":"السؤال التالي";
+ $("next").onclick=()=>{if(idx<9){idx++;render()}else finish()};
+};
+function finish(){
+ show("result");$("greeting").textContent=`برافو يا ${player}!`; $("score").textContent=`${score} / 10`;
+ $("message").textContent=score===10?"أسطورة! تعرف عبدالرحمن من قلبه ❤️":score>=8?"جامد جدًا! تعرفه كويس 👏":score>=5?"حلو! بس لسه فيه حاجات تعرفها عنه 😄":"محتاج تقضي وقت أكتر مع عبدالرحمن 😂";
+ $("detail").textContent=`جاوبت صح على ${score} من 10 أسئلة.`;
+}
+$("again").onclick=()=>{idx=0;score=0;show("start")};
+$("share").onclick=async()=>{let t=`أنا ${player} جبت ${score}/10 في اختبار مين يعرف عبدالرحمن أكتر؟ 💙`;try{if(navigator.share)await navigator.share({title:"نتيجتي في اختبار عبدالرحمن",text:t});else{await navigator.clipboard.writeText(t);$("share").textContent="تم نسخ النتيجة ✓"}}catch(e){}};
+</script>
+</body></html>
