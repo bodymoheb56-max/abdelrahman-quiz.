@@ -1,118 +1,125 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101827">
-  <title>مين يعرف عبدالرحمن أكتر؟</title>
-  <style>
-    *{box-sizing:border-box}
-    body{margin:0;min-height:100vh;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(135deg,#0b1220,#172b45);color:#f8fafc;padding:24px 14px}
-    .wrap{max-width:760px;margin:0 auto}
-    header{text-align:center;padding:26px 16px 20px}
-    h1{margin:0 0 10px;font-size:clamp(25px,5vw,38px);color:#f4d27a}
-    header p{margin:0;color:#cbd5e1;line-height:1.8}
-    .meta{display:inline-block;margin-top:14px;padding:7px 14px;border:1px solid #64748b;border-radius:30px;color:#e2e8f0;font-size:14px}
-    .card{background:#fff;color:#172033;border-radius:18px;padding:22px;margin:14px 0;box-shadow:0 12px 35px #0005}
-    .question{padding:17px 0;border-bottom:1px solid #e5e7eb}
-    .question:last-child{border-bottom:0}
-    .question h2{font-size:18px;margin:0 0 13px;line-height:1.7}
-    .option{display:flex;align-items:center;gap:10px;padding:11px 13px;margin:8px 0;border:1px solid #dbe2ea;border-radius:11px;cursor:pointer;transition:.15s}
-    .option:hover{background:#f1f5f9}
-    .option input{accent-color:#b8860b;width:17px;height:17px}
-    button{width:100%;border:0;border-radius:12px;padding:15px;font-size:17px;font-weight:bold;cursor:pointer;background:#d6ad52;color:#172033;margin-top:12px}
-    button:disabled{opacity:.45;cursor:not-allowed}
-    #result{display:none;text-align:center;margin-top:18px;background:#f8fafc;border-radius:14px;padding:20px}
-    #score{font-size:36px;color:#9a6b0a;font-weight:bold;margin:8px}
-    .small{font-size:13px;color:#64748b;text-align:center;margin-top:16px}
-    .correct{border-color:#16a34a;background:#f0fdf4}
-    .wrong{border-color:#dc2626;background:#fef2f2}
-    @media(max-width:480px){.card{padding:16px}.question h2{font-size:16px}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f0ebf8">
+<title>مين يعرف عبدالرحمن أكتر؟</title>
+<style>
+:root{--purple:#673ab7;--line:#dadce0;--text:#202124;--muted:#5f6368}
+*{box-sizing:border-box}
+body{margin:0;background:#f0ebf8;color:var(--text);font-family:Arial,Tahoma,sans-serif;padding:22px 12px 40px}
+main{max-width:700px;margin:auto}
+.topline{height:10px;background:var(--purple);border-radius:10px 10px 0 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.intro{padding:24px 24px 20px;border-top:0}
+h1{font-size:27px;font-weight:500;margin:4px 0 14px}
+.intro p{font-size:14px;line-height:1.8;margin:0;color:var(--text)}
+.required-note{font-size:13px;color:#d93025;margin-top:18px}
+.question{padding:20px 24px}
+.question-title{font-size:16px;line-height:1.7;font-weight:500;margin:0 0 15px}
+.required{color:#d93025;margin-right:4px}
+.choice{display:flex;align-items:center;gap:12px;padding:8px 2px;min-height:38px;cursor:pointer;font-size:14px;color:#3c4043}
+.choice input{appearance:none;width:19px;height:19px;border:2px solid #777;border-radius:50%;margin:0;flex:none;position:relative;cursor:pointer}
+.choice input:checked{border-color:var(--purple)}
+.choice input:checked:after{content:"";position:absolute;inset:4px;background:var(--purple);border-radius:50%}
+.choice:has(input:checked){color:#202124}
+.actions{display:flex;align-items:center;gap:12px;margin:18px 0}
+button{border:0;border-radius:4px;padding:11px 22px;font-size:14px;font-weight:600;cursor:pointer}
+#submit{background:var(--purple);color:white}
+#submit:disabled{opacity:.45;cursor:not-allowed}
+#reset{background:transparent;color:var(--purple)}
+#result{display:none;padding:22px;text-align:center}
+#result h2{font-weight:500}
+.score{font-size:32px;color:var(--purple);font-weight:bold}
+.note{color:var(--muted);font-size:12px;text-align:center;margin-top:18px}
+.progress{height:6px;background:#e8def8;border-radius:20px;overflow:hidden;margin-top:16px}
+#bar{height:100%;width:0;background:var(--purple);transition:width .2s}
+.progress-label{font-size:12px;color:var(--muted);margin-top:7px}
+.correct{color:#188038!important}
+.incorrect{color:#d93025!important}
+@media(max-width:520px){body{padding:12px 8px 28px}.intro,.question{padding:19px 17px}h1{font-size:23px}}
+</style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>مين يعرف عبدالرحمن أكتر؟</h1>
-    <p>جاوب على العشر أسئلة وشوف تعرف عبدالرحمن قد إيه!</p>
-    <span class="meta">10 أسئلة · 4 اختيارات لكل سؤال</span>
-  </header>
-  <main class="card">
-    <form id="quiz">
-      <div id="questions"></div>
-      <button id="submit" type="submit" disabled>إنهاء الاختبار وإظهار النتيجة</button>
-    </form>
-    <section id="result" aria-live="polite">
-      <h2>نتيجتك</h2>
-      <div id="score"></div>
-      <p id="message"></p>
-      <button type="button" onclick="location.reload()">إعادة الاختبار</button>
-    </section>
-  </main>
-  <p class="small">بالتوفيق ❤️</p>
-</div>
+<main>
+  <section class="card">
+    <div class="topline"></div>
+    <div class="intro">
+      <h1>مين يعرف عبدالرحمن أكتر؟</h1>
+      <p>اختبار بسيط عن عبدالرحمن 👀<br>جاوب عن الأسئلة العشرة، واختار إجابة واحدة لكل سؤال، وبعدها اضغط «إرسال» علشان تشوف نتيجتك.</p>
+      <div class="required-note">* مطلوب</div>
+      <div class="progress"><div id="bar"></div></div>
+      <div class="progress-label" id="progressText">تمت الإجابة عن 0 من 10</div>
+    </div>
+  </section>
+  <form id="quiz">
+    <div id="questions"></div>
+    <div class="actions">
+      <button id="submit" type="submit" disabled>إرسال</button>
+      <button id="reset" type="button" onclick="location.reload()">محو النموذج</button>
+    </div>
+  </form>
+  <section class="card" id="result" aria-live="polite">
+    <h2>تم إرسال إجاباتك</h2>
+    <div class="score" id="score"></div>
+    <p id="message"></p>
+    <button id="again" type="button" onclick="location.reload()">إعادة الاختبار</button>
+  </section>
+  <p class="note">نموذج اختبار تجريبي بتصميم مستوحى من Google Forms</p>
+</main>
 <script>
 const questions = [
-  {q:"لون عبدالرحمن المفضل إيه؟", options:["أحمر","أزرق","أسود","أبيض"], answer:1},
-  {q:"تاريخ عيد ميلاده إمتى؟", options:["1/6","11/6","11/7","6/11"], answer:1},
-  {q:"أكلته المفضلة إيه؟", options:["بيتزا","كشري","شاورما","مكرونة"], answer:2},
-  {q:"أكتر أكلة بيكرهها إيه؟", options:["ملوخية","سبانخ","بامية","فول"], answer:1},
-  {q:"إيه أكتر حاجة بيحب يعملها؟", options:["يلعب كورة","يسافر","يسأل عن صحابه","يتفرج على أفلام"], answer:2},
-  {q:"أكتر حاجة بيكرهها في الناس إيه؟", options:["الغرور","الكذب","الخيانة","العصبية"], answer:2},
-  {q:"مطربه المفضل مين؟", options:["عمرو دياب","تامر عاشور","محمد حماقي","تامر حسني"], answer:1},
-  {q:"فريقه الكروي المفضل إيه؟", options:["الزمالك","الأهلي","بيراميدز","ليفربول"], answer:1},
-  {q:"أكتر حاجة بتفرحه إيه؟", options:["الهدايا","الفلوس","اهتمام صحابه بيه","السفر"], answer:2},
-  {q:"إيه أكبر حلم نفسه يحققه؟", options:["يسافر العالم","يشتري عربية أحلامه","يبقى مشهور","يفتح مطعم"], answer:1}
+ {q:"لون عبدالرحمن المفضل؟",o:["أحمر","ازرق","أسود","أبيض"],a:1},
+ {q:"تاريخ عيد ميلاد عبدالرحمن؟",o:["1/6","11/6","11/7","6/11"],a:1},
+ {q:"أكلة عبدالرحمن المفضلة؟",o:["بيتزا","كشري","شاورما","مكرونة"],a:2},
+ {q:"أكتر أكلة عبدالرحمن بيكرهها؟",o:["ملوخية","سبانخ","بامية","فول"],a:1},
+ {q:"إيه أكتر حاجة عبدالرحمن بيحب يعملها؟",o:["يلعب كورة","يسافر","اسأل عن صحابي","يتفرج على أفلام"],a:2},
+ {q:"إيه أكتر حاجة عبدالرحمن بيكرهها في الناس؟",o:["الغرور","الكذب","الخيانة","العصبية"],a:2},
+ {q:"مطرب عبدالرحمن المفضل؟",o:["عمرو دياب","تامر عاشور","محمد حماقي","تامر حسني"],a:1},
+ {q:"فريق عبدالرحمن الكروي المفضل؟",o:["الزمالك","الاهلي","بيراميدز","ليفربول"],a:1},
+ {q:"أكتر حاجة بتفرّح عبدالرحمن؟",o:["الهدايا","الفلوس","اهتمام صحابي بيا","السفر"],a:2},
+ {q:"إيه أكبر حلم عبدالرحمن نفسه يحققه؟",o:["يسافر العالم","اشتري عربيه احلامي","يبقى مشهور","يفتح مطعم"],a:1}
 ];
-const container = document.getElementById("questions");
-questions.forEach((item, i) => {
-  const section = document.createElement("section");
-  section.className = "question";
-  const heading = document.createElement("h2");
-  heading.textContent = `السؤال ${i+1}: ${item.q}`;
-  section.appendChild(heading);
-  item.options.forEach((option, j) => {
-    const label = document.createElement("label");
-    label.className = "option";
-    const input = document.createElement("input");
-    input.type = "radio";
-    input.name = `q${i}`;
-    input.value = j;
-    input.addEventListener("change", updateProgress);
-    const span = document.createElement("span");
-    span.textContent = option;
-    label.append(input, span);
-    section.appendChild(label);
-  });
-  container.appendChild(section);
+const root=document.getElementById("questions");
+questions.forEach((item,i)=>{
+ const card=document.createElement("section");card.className="card question";card.id="question"+i;
+ const title=document.createElement("h2");title.className="question-title";
+ title.append(document.createTextNode(item.q+" "),Object.assign(document.createElement("span"),{className:"required",textContent:"*"}));
+ card.appendChild(title);
+ item.o.forEach((option,j)=>{
+  const label=document.createElement("label");label.className="choice";
+  const input=document.createElement("input");input.type="radio";input.name="q"+i;input.value=j;input.required=true;
+  input.addEventListener("change",updateProgress);
+  const text=document.createElement("span");text.textContent=option;
+  label.append(input,text);card.appendChild(label);
+ });
+ root.appendChild(card);
 });
 function updateProgress(){
-  const answered = questions.filter((_,i)=>document.querySelector(`input[name="q${i}"]:checked`)).length;
-  document.getElementById("submit").disabled = answered !== questions.length;
+ const count=questions.filter((_,i)=>document.querySelector('input[name="q'+i+'"]:checked')).length;
+ document.getElementById("bar").style.width=(count*10)+"%";
+ document.getElementById("progressText").textContent="تمت الإجابة عن "+count+" من 10";
+ document.getElementById("submit").disabled=count!==10;
 }
-document.getElementById("quiz").addEventListener("submit", function(e){
-  e.preventDefault();
-  let score = 0;
-  questions.forEach((item,i)=>{
-    const selected = document.querySelector(`input[name="q${i}"]:checked`);
-    const labels = [...document.querySelectorAll(`input[name="q${i}"]`)].map(el=>el.parentElement);
-    labels.forEach((label,j)=>{
-      label.classList.remove("correct","wrong");
-      if(j===item.answer) label.classList.add("correct");
-      if(selected && Number(selected.value)===j && j!==item.answer) label.classList.add("wrong");
-    });
-    if(selected && Number(selected.value)===item.answer) score++;
+document.getElementById("quiz").addEventListener("submit",e=>{
+ e.preventDefault();let score=0;
+ questions.forEach((item,i)=>{
+  const selected=document.querySelector('input[name="q'+i+'"]:checked');
+  document.querySelectorAll('input[name="q'+i+'"]').forEach((input,j)=>{
+   input.disabled=true;
+   const label=input.parentElement;
+   if(j===item.a){label.classList.add("correct");}
+   if(Number(selected.value)===j&&j!==item.a){label.classList.add("incorrect");}
   });
-  document.querySelectorAll('input[type="radio"]').forEach(input=>input.disabled=true);
-  document.getElementById("submit").disabled=true;
-  document.getElementById("result").style.display="block";
-  document.getElementById("score").textContent=`${score} / 10`;
-  document.getElementById("message").textContent =
-    score===10 ? "ممتاز! أنت تعرف عبدالرحمن كويس جدًا 🎉" :
-    score>=7 ? "جامد! أنت تعرف عنه معلومات كتير 👏" :
-    score>=5 ? "كويس، لكن لسه محتاج تعرفه أكتر 🙂" :
-    "واضح إنك محتاج تعرف عبدالرحمن أكتر 😄";
-  document.getElementById("result").scrollIntoView({behavior:"smooth"});
+  if(Number(selected.value)===item.a)score++;
+ });
+ document.getElementById("submit").disabled=true;
+ document.getElementById("reset").disabled=true;
+ document.getElementById("result").style.display="block";
+ document.getElementById("score").textContent=score+" / 10";
+ document.getElementById("message").textContent=score===10?"ممتاز! أنت تعرف عبدالرحمن كويس جدًا 🎉":score>=7?"جامد! أنت تعرف عنه معلومات كتير 👏":score>=5?"كويس، لكن لسه محتاج تعرفه أكتر 🙂":"واضح إنك محتاج تعرف عبدالرحمن أكتر 😄";
+ document.getElementById("result").scrollIntoView({behavior:"smooth"});
 });
 </script>
 </body>
